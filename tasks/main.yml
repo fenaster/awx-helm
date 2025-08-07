@@ -3,9 +3,19 @@
 # tasks file for awx-helm
 
 - name: Stage values file
-  ansible.builtin.include_tasks: awx_config.yml
+  ansible.builtin.include_tasks: config.yml
+
+- name: AWX Namespace
+  ansible.builtin.include_tasks: namespace.yml
+
+- name: Configure Storage
+  ansible.builtin.include_tasks: storage.yml
 
 - name: Install AWX Operator through Helm
-  ansible.builtin.include_tasks: awx-operator.yml
+  ansible.builtin.include_tasks: operator.yml
 
+- name: Install AWX
+  ansible.builtin.include_tasks: awx.yml
 
+- name: AWX Ingress
+  ansible.builtin.include_tasks: ingress.yml

@@ -1,0 +1,31 @@
+---
+
+- name: Create Persistent Volume Claim
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: postgres-pv
+        namespace: awx-system
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: longhorn
+        resources:
+          requests:
+            storage: 8Gi
+
+- name: Wait For Persistent Volume
+  kubernetes.core.k8s_info:
+    kind: PersistentVolumeClaim
+    wait: true
+    name: postgres-pv
+    namespace: awx-system
+    wait_sleep: 10
+    wait_timeout: 5400
+  register: pvc_create_out
+  until: pvc_create_out.resources.0.status.phase == "Bound"
+  retries: 100
+  delay: 5

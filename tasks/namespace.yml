@@ -1,0 +1,7 @@
+---
+- name: Create AWX Namespace
+  kubernetes.core.k8s:
+    name: awx-system
+    api_version: v1
+    kind: namespace
+    state: present

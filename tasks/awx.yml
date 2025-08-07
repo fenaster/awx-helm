@@ -1,0 +1,39 @@
+---
+- name: Build AWX
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: awx.ansible.com/v1beta1
+      kind: AWX
+      metadata:
+        name: ansible-awx
+        namespace: awx-system
+      spec:
+        service_type: nodeport
+        postgres_storage_class: longhorn
+        postgres_data_volume_init: true
+
+- name: Configure AWX LoadBalancer
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: awx-lb-service
+        namespace: awx-system
+        labels:
+          app.kubernetes.io/component: awx
+          app.kubernetes.io/name: awx
+          app.kubernetes.io/part-of: awx
+      spec:
+        ports:
+        - name: http
+          port: 80
+          protocol: TCP
+          targetPort: 8052
+        selector:
+          app.kubernetes.io/component: awx
+          app.kubernetes.io/name: awx
+        sessionAffinity: None
+        type: LoadBalancer

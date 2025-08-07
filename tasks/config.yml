@@ -1,0 +1,11 @@
+---
+
+- name: Create Opensearch directory
+  ansible.builtin.file:
+    path: "{{ awx_operator_dir }}"
+    state: directory
+
+- name: Create config file
+  ansible.builtin.template:
+    src: "{{ awx_customvalues }}"
+    dest: "{{ awx_operator_dir }}"
