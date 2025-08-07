@@ -1,0 +1,9 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for awx-helm
+awx_helm_operator_version: "awx-operator"
+awx_helm_operator_repo: "https://ansible-community.github.io/awx-operator-helm/"
+awx_operator_name: "awx-operator"
+awx_namespace: "awx-system"
+awx_operator_dir: "awx"
+awx_customvalues: "awx_values.yml"
